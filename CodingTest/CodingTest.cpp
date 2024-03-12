@@ -4,22 +4,32 @@
 #include <string>
 using namespace std;
 
-string S;
-int a[26];
-
+int Charge[3];
+int a, b;
+int cnt[104];
+int ret;
 int main()
 {
-	cin >> S;
+	for (int i = 0; i < 3; i++)
+		cin >> Charge[i];
 
-	for(auto c : S)
+	for( int i = 0; i < 3; i++)
 	{
-		a[c - 'a']++;
+		cin >> a >> b;
+		for (int j = a; j < b; j++)
+			cnt[j]++;
+	}
+	for(int j = 1; j < 100; j++)
+	{
+		if(cnt[j])
+		{
+			if (cnt[j] == 1) ret += Charge[0];
+			else if (cnt[j] == 2) ret += Charge[1] * 2;
+			else ret += Charge[2] * 3;
+		}
 	}
 
-	for(int i = 0; i < 26; i++)
-	{
-		cout << a[i] << " ";
-	}
+	cout << ret << endl;
 
 	return 0;
 }
