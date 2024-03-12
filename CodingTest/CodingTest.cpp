@@ -4,18 +4,44 @@
 #include <string>
 using namespace std;
 
-string S, bS;
-
+int a;
+string name;
+int cnt[154];
+string ret;
+int retcnt;
+bool IsOK = false;
 int main()
 {
-	cin >> S;
-	bS = S;
-	reverse(bS.begin(), bS.end());
+	cin >> a;
 
-	if (bS == S)
-		cout << "1" << endl;
+	for(int i = 0; i < a; i++)
+	{
+		cin >> name;
+
+		cnt[name[0] - 'a']++;
+	}
+
+	for(auto a : cnt)
+	{
+		if (a >= 5)
+		{
+			ret += (retcnt + 'a');
+			IsOK = true;
+		}
+		retcnt++;
+
+	}
+
+	if(IsOK == true)
+	{
+		cout << ret << endl;
+	}
 	else
-		cout << "0" << endl;
+	{
+		cout << "PREDAJA" << endl;
+	}
+
+
 	return 0;
 }
 
