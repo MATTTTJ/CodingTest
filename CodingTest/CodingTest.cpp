@@ -4,46 +4,24 @@
 #include <string>
 using namespace std;
 
-int a;
-string origin,tmp;
-vector<string> ret;
+int n, k, temp, psum[100001], ret = -1000000;
 
 int main()
 {
-	cin >> a;
-	cin >> origin;
+	cin >> n >> k;
 
-	string pre, suf;
-
-	int pos = origin.find('*');
-
-	pre = origin.substr(0, pos);
-	suf = origin.substr(pos + 1);
-
-	for(int i = 0; i < a; i++)
+	for(int i = 1; i <= n; i++)
 	{
-		cin >> tmp;
-
-		if (pre.size() + suf.size() > tmp.size())
-		{
-			//cout << "NE" << endl;
-			ret.push_back("NE");
-		}
-		else
-		{
-			if (pre == tmp.substr(0, pre.size()) && suf == tmp.substr(tmp.size() - suf.size()))
-				//cout << "DA" << endl;
-			ret.push_back("DA");
-			else
-				//cout << "NE" << endl;
-				ret.push_back("NE");
-		}
+		cin >> temp;
+		psum[i] = psum[i - 1] + temp;
 	}
 
-	for(auto x : ret)
+	for(int i = k; i <= n; i++)
 	{
-		cout << x << endl;
+		ret = max(ret, psum[i] - psum[i - k]);
 	}
+
+	cout << ret << "\n";
 
 	return 0;
 }
