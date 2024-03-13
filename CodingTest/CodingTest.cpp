@@ -4,33 +4,46 @@
 #include <string>
 using namespace std;
 
-string s;
+int a;
+string origin,tmp;
+vector<string> ret;
 
 int main()
 {
-	getline(cin, s);
+	cin >> a;
+	cin >> origin;
 
-	for(int i =0; i < s.size(); i++)
+	string pre, suf;
+
+	int pos = origin.find('*');
+
+	pre = origin.substr(0, pos);
+	suf = origin.substr(pos + 1);
+
+	for(int i = 0; i < a; i++)
 	{
-		if(s[i] >= 65 && s[i] < 97)
+		cin >> tmp;
+
+		if (pre.size() + suf.size() > tmp.size())
 		{
-			if (s[i] + 13 > 90)
-				s[i] = s[i] + 13 - 26;
-			else
-				s[i] = s[i] + 13;
+			//cout << "NE" << endl;
+			ret.push_back("NE");
 		}
-		else if (s[i] >= 97 && s[i] <= 122)
+		else
 		{
-			if (s[i] + 13 > 122)
-				s[i] = s[i] + 13 - 26;
+			if (pre == tmp.substr(0, pre.size()) && suf == tmp.substr(tmp.size() - suf.size()))
+				//cout << "DA" << endl;
+			ret.push_back("DA");
 			else
-			{
-				s[i] = s[i] + 13;
-			}
+				//cout << "NE" << endl;
+				ret.push_back("NE");
 		}
 	}
 
-	cout << s ;
+	for(auto x : ret)
+	{
+		cout << x << endl;
+	}
 
 	return 0;
 }
