@@ -4,43 +4,33 @@
 #include <string>
 using namespace std;
 
-int a;
-string name;
-int cnt[154];
-string ret;
-int retcnt;
-bool IsOK = false;
+string s;
+
 int main()
 {
-	cin >> a;
+	getline(cin, s);
 
-	for(int i = 0; i < a; i++)
+	for(int i =0; i < s.size(); i++)
 	{
-		cin >> name;
-
-		cnt[name[0] - 'a']++;
-	}
-
-	for(auto a : cnt)
-	{
-		if (a >= 5)
+		if(s[i] >= 65 && s[i] < 97)
 		{
-			ret += (retcnt + 'a');
-			IsOK = true;
+			if (s[i] + 13 > 90)
+				s[i] = s[i] + 13 - 26;
+			else
+				s[i] = s[i] + 13;
 		}
-		retcnt++;
-
+		else if (s[i] >= 97 && s[i] <= 122)
+		{
+			if (s[i] + 13 > 122)
+				s[i] = s[i] + 13 - 26;
+			else
+			{
+				s[i] = s[i] + 13;
+			}
+		}
 	}
 
-	if(IsOK == true)
-	{
-		cout << ret << endl;
-	}
-	else
-	{
-		cout << "PREDAJA" << endl;
-	}
-
+	cout << s ;
 
 	return 0;
 }
