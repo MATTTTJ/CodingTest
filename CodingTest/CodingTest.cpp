@@ -5,38 +5,31 @@
 #include <string>
 using namespace std;
 
-int n, m;
-string s;
-map<string, int> mp;
-map<int, string> mp2;
-vector<string> str;
+int t, n;
+string a, b;
+
 int main()
 {
-	cin >> n >> m;
-
-	for(int i = 0; i < n; i++)
+	cin >> t;
+	while(t--)
 	{
-		cin >> s;
-		mp[s] = i + 1;
-		mp2[i + 1] = s;
-	}
-
-	for(int i = 0; i < m; i++)
-	{
-		cin >> s;
-		str.push_back(s);
-	}
-
-	for(int i = 0; i < (int)str.size(); i++)
-	{
-		if (atoi(str[i].c_str()) == 0)
+		map<string, int> _map;
+		cin >> n;
+		for(int i = 0; i < n; i++)
 		{
-			cout << mp[str[i]] << "\n";
+			cin >> a >> b;
+			_map[b]++;
 		}
-		else
-			cout << mp2[atoi(str[i].c_str())] << "\n";
-	}
 
+		long long ret = 1;
+
+		for(auto c : _map)
+		{
+			ret *= ((long long)c.second + 1);
+		}
+		ret--;
+		cout << ret << "\n";
+	}
 
 	return 0;
 }
