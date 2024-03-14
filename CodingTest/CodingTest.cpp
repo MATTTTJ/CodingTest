@@ -5,31 +5,44 @@
 #include <string>
 using namespace std;
 
-int t, n;
-string a, b;
+string s, ret;
+int cnt[200], flag;
+char mid;
 
 int main()
 {
-	cin >> t;
-	while(t--)
+	cin >> s;
+
+	for(char a : s)
 	{
-		map<string, int> _map;
-		cin >> n;
-		for(int i = 0; i < n; i++)
-		{
-			cin >> a >> b;
-			_map[b]++;
-		}
-
-		long long ret = 1;
-
-		for(auto c : _map)
-		{
-			ret *= ((long long)c.second + 1);
-		}
-		ret--;
-		cout << ret << "\n";
+		cnt[a]++;
 	}
+
+	for(int i = 'Z'; i >= 'A'; i--)
+	{
+		if(cnt[i])
+		{
+			if(cnt[i] & 1)
+			{
+				mid = char(i);
+				flag++;
+				cnt[i]--;
+			}
+			if (flag == 2) break;
+			for(int j = 0; j < cnt[i]; j += 2)
+			{
+				ret = char(i) + ret;
+				ret += char(i);
+			}
+		}
+	}
+	if (mid)
+		ret.insert(ret.begin() + ret.size() / 2, mid);
+
+	if (flag == 2)
+		cout << "I'm Sorry Hansoo\n";
+	else
+		cout << ret << "\n";
 
 	return 0;
 }
