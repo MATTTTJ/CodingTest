@@ -5,44 +5,27 @@
 #include <string>
 using namespace std;
 
-string s, ret;
-int cnt[200], flag;
-char mid;
+int n, m, cnt;
+int num[15004];
 
 int main()
 {
-	cin >> s;
+	cin >> n;
+	cin >> m;
 
-	for(char a : s)
+	for(int i = 0; i < n; i++)
 	{
-		cnt[a]++;
+		cin >> num[i];
 	}
 
-	for(int i = 'Z'; i >= 'A'; i--)
+	for(int i = 0; i < n; i++)
 	{
-		if(cnt[i])
+		for(int j = i +1; j < n; j++)
 		{
-			if(cnt[i] & 1)
-			{
-				mid = char(i);
-				flag++;
-				cnt[i]--;
-			}
-			if (flag == 2) break;
-			for(int j = 0; j < cnt[i]; j += 2)
-			{
-				ret = char(i) + ret;
-				ret += char(i);
-			}
+			if (num[i] + num[j] == m) cnt++;
 		}
 	}
-	if (mid)
-		ret.insert(ret.begin() + ret.size() / 2, mid);
-
-	if (flag == 2)
-		cout << "I'm Sorry Hansoo\n";
-	else
-		cout << ret << "\n";
+	cout << cnt << endl;
 
 	return 0;
 }
