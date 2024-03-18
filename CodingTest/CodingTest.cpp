@@ -6,29 +6,29 @@
 #include <string>
 using namespace std;
 
-int n, ret;
-string s;
+typedef long long ll;
+ll a, b, c;
+
+ll go(ll a, ll b)
+{
+	if (b == 1)
+		return a % c;
+
+	ll ret = go(a, b / 2);
+
+	ret = (ret * ret) % c;
+
+	if (b % 2)
+		ret = (ret * a) % c;
+
+	return ret;
+}
 
 int main()
 {
-	cin >> n;
-	for(int i = 0; i < n; i++)
-	{
-		cin >> s;
-		stack<char> stk;
-		for(char a : s)
-		{
-			if (stk.size() && stk.top() == a)
-				stk.pop();
-			else
-				stk.push(a);
-		}
+	cin >> a >> b >> c;
 
-		if (stk.size() == 0)
-			ret++;
-	}
-
-	cout << ret << endl;
+	cout << go(a, b) << "\n";
 
 	return 0;
 }
