@@ -7,28 +7,29 @@
 using namespace std;
 
 typedef long long ll;
-ll a, b, c;
 
-ll go(ll a, ll b)
-{
-	if (b == 1)
-		return a % c;
-
-	ll ret = go(a, b / 2);
-
-	ret = (ret * ret) % c;
-
-	if (b % 2)
-		ret = (ret * a) % c;
-
-	return ret;
-}
+int n;
 
 int main()
 {
-	cin >> a >> b >> c;
-
-	cout << go(a, b) << "\n";
+	while(scanf_s("%d", &n) != EOF)
+	{
+		int cnt = 1, ret = 1;
+		while(true)
+		{
+			if(cnt % n == 0)
+			{
+				printf("%d\n", ret);
+				break;
+			}
+			else
+			{
+				cnt = (cnt * 10) + 1;
+				cnt %= n;
+				ret++;
+			}
+		}
+	}
 
 	return 0;
 }
