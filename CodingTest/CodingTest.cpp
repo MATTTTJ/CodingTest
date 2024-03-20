@@ -2,98 +2,64 @@
 #pragma warning(disable:4996)
 #include <queue>
 #include <tuple>
-
+#include <vector>
 using namespace std;
 
-const int max_n = 104;
-
-int n, m, a[max_n][max_n], visited[max_n][max_n], y, x;
+const int max_cnt = 51;
+int m, n, k, y, x, ret, ny, nx, t;
+int a[max_cnt][max_cnt];
+bool visited[max_cnt][max_cnt];
 
 int dy[4] = { -1, 0, 1, 0 };
 int dx[4] = { 0, 1, 0, -1 };
 
-int main()
+void dfs(int y, int x)
 {
-	scanf("%d %d", &n, &m);
+	visited[y][x] = true;
 
-	for(int i = 0; i < n; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		for(int j = 0; j < m; j++)
-		{
-			scanf("%1d", &a[i][j]);
-		}
+		ny = y + dy[i];
+		nx = x + dx[i];
+
+		if (ny < 0 || nx < 0 || ny >= n || nx >= m)
+			continue;
+		if (a[ny][nx] == 1 && !visited[ny][nx])
+			dfs(ny, nx);
 	}
-
-	queue<pair<int, int>> q;
-	visited[0][0] = 1;
-	q.push({ 0,0 });
-
-	while(q.size())
-	{
-		tie(y, x) = q.front();
-		q.pop();
-
-		for(int i = 0; i < 4; i++)
-		{
-			int ny = y + dy[i];
-			int nx = x + dx[i];
-
-			if(ny < 0 || nx < 0 || ny >= n || nx >= m || a[ny][nx] == 0)
-				continue;
-			if(visited[ny][nx] >= 1)
-				continue;
-
-			visited[ny][nx] = visited[y][x] + 1;
-			q.push({ ny, nx });
-		}
-	}
-
-	printf("%d", visited[n - 1][m - 1]);
-
-	return 0;
 }
-
-/*
- * using namespace std;
-
-const int max_n = 104;
-int dy[4] = { -1, 0, 1, 0 }, dx[4] = { 0, 1, 0, -1 };
-int n, m, a[max_n][max_n], visited[max_n][max_n], y, x;
 
 int main()
 {
-	scanf("%d %d", &n, &m);
+	cin >> t;
 
-	for(int i =0; i< n; i++)
+	while (t--)
 	{
-		for(int j = 0; j <m; j++)
+		fill(&a[0][0], &a[0][0] + max_cnt * max_cnt, 0);
+		fill(&visited[0][0], &visited[0][0] + max_cnt * max_cnt, 0);
+		ret = 0;
+		cin >> m >> n >> k;
+
+		for (int i = 0; i < k; i++)
 		{
-			scanf("%1d", &a[i][j]);
+			cin >> x >> y;
+			a[y][x] = 1;
 		}
-	}
 
-	queue<pair<int, int>> q;
-	visited[0][0] = 1;
-	q.push({ 0, 0 });
 
-	while(q.size())
-	{
-		tie(y, x) = q.front();
-		q.pop();
-
-		for(int i =0; i < 4; i++)
+		for (int i = 0; i < n; i++)
 		{
-			int ny = y + dy[i];
-			int nx = x + dx[i];
-
-			if (ny < 0 || ny >= n || nx < 0 || nx >= m || a[ny][nx] == 0) continue;
-			if (visited[ny][nx])  continue;
-			visited[ny][nx] = visited[y][x] + 1;
-			q.push({ ny, nx });
+			for (int j = 0; j < m; j++)
+			{
+				if (a[i][j] == 1 && !visited[i][j])
+				{
+					dfs(i, j);
+					ret++;
+				}
+			}
 		}
-	}
 
-	printf("%d", visited[n - 1][m - 1]);
+		cout << ret << "\n";
+	}
 	return 0;
 }
- */
