@@ -2,67 +2,69 @@
 
 #include <iostream>
 #include <queue>
-#include <tuple>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
-const int max_n = 101;
-int n, ny, nx, d, ret = 1;
-int a[max_n][max_n];
-bool visited[max_n][max_n];
+#define y1 aaaa
 
-int dy[4] = { -1, 0, 1, 0 };
-int dx[4] = { 0, 1, 0, -1 };
+int a[104][104], m, n, k, x1, x2, y1, y2, visited[104][104];
+const int dy[4] = { -1, 0, 1, 0 };
+const int dx[4] = { 0, 1, 0, -1 };
+vector<int> ret;
 
-void dfs(int y, int x, int d)
+int dfs(int y, int x)
 {
-	visited[y][x] = true;
+	visited[y][x] = 1;
+	int ret = 1;
 
-	for (int i = 0; i < 4; i++)
+	for(int i = 0; i < 4; i++)
 	{
-		ny = y + dy[i];
-		nx = x + dx[i];
+		int ny = y + dy[i];
+		int nx = x + dx[i];
 
-		if (ny < 0 || nx < 0 || ny >= n || nx >= n)
+		if(ny < 0 || nx < 0 || ny >= m || nx >= n || visited[ny][nx] == 1)
 			continue;
-		if (a[ny][nx] > d && !visited[ny][nx])
-			dfs(ny, nx, d);
+		if(a[ny][nx] == 1)
+			continue;
+		ret += dfs(ny, nx);
 	}
+
+	return ret;
 }
 
 int main()
 {
-	cin >> n;
+	cin >> m >> n >> k;
 
-	for (int i = 0; i < n; i++)
+	for(int i = 0; i < k; i++)
 	{
-		for (int j = 0; j < n; j++)
+		cin >> x1 >> y1 >> x2 >> y2;
+
+		for(int x = x1; x < x2; x++)
 		{
-			cin >> a[i][j];
-		}
-	}
-
-
-	for (d = 1; d < 101; d++)
-	{
-		fill(&visited[0][0], &visited[0][0] + max_n * max_n, 0);
-		int cnt = 0;
-
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < n; j++)
+			for(int y = y1; y < y2; y++)
 			{
-				if (a[i][j] > d && !visited[i][j])
-				{
-					dfs(i, j, d);
-					cnt++;
-				}
+				a[y][x] = 1;
 			}
 		}
-		ret = max(ret, cnt);
 	}
 
-	cout << ret << endl;
+	for(int i = 0; i < m; i++)
+	{
+		for(int j = 0; j < n; j++)
+		{
+			if (a[i][j] != 1 && visited[i][j] == 0)
+				ret.push_back(dfs(i, j));
+		}
+	}
 
+	sort(ret.begin(), ret.end());
+
+	cout << ret.size() << endl;
+
+	for (auto v : ret)
+		cout << v << " ";
+	
 	return 0;
 }
