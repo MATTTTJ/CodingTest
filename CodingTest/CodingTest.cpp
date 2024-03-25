@@ -10,47 +10,50 @@
 
 using namespace std;
 
-int n, r, temp, root;
-vector<int> adj[54];
+vector<int> v[10001];
+int dp[10001], mx, visited[10001], n, m, a, b;
 
 int dfs(int here)
 {
-	int ret = 0;
-	int child = 0;
-	for(int there : adj[here])
+	visited[here] = 1;
+
+	int ret = 1;
+
+	for(int there : v[here])
 	{
-		if(there == r)
+		if(visited[there])
 			continue;
 		ret += dfs(there);
-		child++;
 	}
-	if (child == 0)
-		return 1;
 
 	return ret;
 }
 
+
 int main()
 {
-	cin >> n;
+	cin >> n >> m;
 
-	for(int i = 0; i < n; i++)
+	while(m--)
 	{
-		cin >> temp;
-
-		if (temp == -1)
-			root = i;
-		else
-			adj[temp].push_back(i);
+		cin >> a >> b;
+		v[b].push_back(a);
 	}
-	cin >> r;
-	if(r == root)
+
+	for(int i = 1; i <= n; i++)
 	{
-		cout << 0 << "\n";
+		memset(visited, 0, sizeof(visited));
 
-		return 0;
+		dp[i] = dfs(i);
+
+		mx = max(dp[i], mx);
 	}
-	cout << dfs(root) << "\n";
+
+	for(int i = 1; i <= n; i++)
+	{
+		if (mx == dp[i])
+			cout << i << " ";
+	}
 
 	return 0;
 }
