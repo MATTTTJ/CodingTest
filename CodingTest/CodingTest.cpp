@@ -7,53 +7,35 @@
 #include <map>
 #include <stack>
 #include <string>
+#include <cstring>
 
 using namespace std;
 
-vector<int> v[10001];
-int dp[10001], mx, visited[10001], n, m, a, b;
-
-int dfs(int here)
-{
-	visited[here] = 1;
-
-	int ret = 1;
-
-	for(int there : v[here])
-	{
-		if(visited[there])
-			continue;
-		ret += dfs(there);
-	}
-
-	return ret;
-}
-
+int n, a[1000004], ret[1000004];
+stack<int> s;
 
 int main()
 {
-	cin >> n >> m;
+	cin >> n;
+	memset(ret, -1, sizeof(ret));
 
-	while(m--)
+	for(int i = 0; i < n; i ++)
 	{
-		cin >> a >> b;
-		v[b].push_back(a);
+		cin >> a[i];
+
+		// 오큰수가 발생되는 순간
+		while(s.size() && a[s.top()] < a[i])
+		{
+			// 결과값을 담는다.
+			ret[s.top()] = a[i];
+			s.pop();
+		}
+		// 오큰수가 결정이 안됐으면 일단 담아놓는다. 
+		s.push(i);
 	}
 
-	for(int i = 1; i <= n; i++)
-	{
-		memset(visited, 0, sizeof(visited));
-
-		dp[i] = dfs(i);
-
-		mx = max(dp[i], mx);
-	}
-
-	for(int i = 1; i <= n; i++)
-	{
-		if (mx == dp[i])
-			cout << i << " ";
-	}
+	for (int i = 0; i < n; i++)
+		cout << ret[i] << " ";
 
 	return 0;
 }
