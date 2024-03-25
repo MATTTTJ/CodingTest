@@ -10,43 +10,60 @@
 
 using namespace std;
 
-int n, l, r;
-string s;
-
-bool check(string s)
-{
-	stack<char> stk;
-
-	for(char c : s)
-	{
-		if (c == '(')
-		{
-			stk.push(c);
-		}
-		else
-		{
-			if (!stk.empty())
-				stk.pop();
-			else
-				return false;
-		}
-	}
-	// 전부 pop 되어야만 true 반환
-	return stk.empty();
-}
-
 int main()
 {
-	cin >> n;
+	string s;
 
-	for(int i = 0; i < n; i++)
+	while(true)
 	{
-		cin >> s;
+		getline(cin, s);
 
-		if (check(s))
-			cout << "YES" << "\n";
+		if (s == ".") 
+			break;
+
+		stack<int> stk;
+		
+		bool check = true;
+
+		for(int i = 0; i < s.length(); i++)
+		{
+			// 실패하는 조건을 우선
+			if(s[i] == ')')
+			{
+				if(stk.size() == 0 || stk.top() == '[')
+				{
+					check = false;
+					break;
+				}
+				else
+				{
+					stk.pop();
+				}
+			}
+			// 실패하는 조건을 우선
+			if(s[i] == ']')
+			{
+				if (stk.size() == 0 || stk.top() == '(')
+				{
+					check = false;
+					break;
+				}
+				else
+				{
+					stk.pop();
+				}
+			}
+
+			if (s[i] == '(')
+				stk.push(s[i]);
+			if (s[i] == '[')
+				stk.push(s[i]);
+		}
+		// 실패하지 않고 스택이 비워진 상태라면
+		if (check && stk.size() == 0)
+			cout << "yes\n";
 		else
-			cout << "NO" << "\n";
+			cout << "no\n";
 	}
 
 	return 0;
