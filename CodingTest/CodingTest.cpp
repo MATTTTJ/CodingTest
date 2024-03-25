@@ -7,59 +7,32 @@
 #include <map>
 using namespace std;
 
-int h, w, cnt;
-char a[104][104], ret[104][104];
-bool flag = false;
+typedef unsigned long long ll;
 
-string s;
-vector<string> tmp;
+int n,a;
 
 int main()
 {
-	cin >> h >> w;
+	cin >> n;
 
-	for(int i = 0; i < h; i++)
+	for(int i = 0; i <n; i++)
 	{
-		cin >> s;
-		tmp.push_back(s);
-	}
+		cin >> a;
 
-	for (int i = 0; i < h; i++)
-	{
-		flag = false;
-		cnt = 0;
-		
-		for (int j = 0; j < w; j++)
+		int ret2 { 0 }, ret5 { 0 };
+
+		for(int j = 2;j <= a; j *= 2)
 		{
-			if(flag == false && tmp[i][j] == '.')
-			{
-				ret[i][j] = -1;
-			}
-			else if(tmp[i][j] == 'c')
-			{
-				ret[i][j] = 0;
-				flag = true;
-				cnt = 0;
-			}
-			else if(flag == true && tmp[i][j] == '.')
-			{
-				cnt++;
-				ret[i][j] += cnt;
-			}
+			ret2 += a / j;
 		}
-	}
 
-	for(int i = 0; i < h; i++)
-	{
-		for(int j = 0; j < w; j++)
+		for(int j = 5; j <= a; j *= 5)
 		{
-			int b = ret[i][j];
-			cout << b << " ";
-
-			if (j + 1 == w)
-				cout << endl;
+			ret5 += a / j;
 		}
+		// 2와 5가 있어야 10이 만들어지니까 서로 조합이 되는 최소의 수가 0의 갯수다.
+		cout << min(ret2, ret5) << endl;
 	}
-
+	
 	return 0;
 }
