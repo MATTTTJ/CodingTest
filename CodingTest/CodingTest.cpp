@@ -7,64 +7,59 @@
 #include <map>
 using namespace std;
 
-int n;
-vector<string> v;
-string s, ret;
+int h, w, cnt;
+char a[104][104], ret[104][104];
+bool flag = false;
 
-void go()
-{
-	while(true)
-	{
-		if (ret.size() && ret.front() == '0')
-		{
-			ret.erase(ret.begin());
-		}
-		else
-			break;
-	}
-	if (ret.size() == 0) ret = "0";
-	v.push_back(ret);
-	ret = "";
-}
-
-bool cmp(string a, string b)
-{
-	// 오름차순
-	if (a.size() == b.size())
-		return a < b;
-
-	return a.size() < b.size();
-}
+string s;
+vector<string> tmp;
 
 int main()
 {
-	cin >> n;
+	cin >> h >> w;
 
-	for(int i = 0; i< n; i++)
+	for(int i = 0; i < h; i++)
 	{
 		cin >> s;
-		ret = "";
-
-		for(int j =0 ; j < s.size(); j++)
-		{
-			// 숫자라면
-			if (s[j] < 65)
-				ret += s[j];
-			// 숫자가 아니면서 숫자 다음에 나온 글자라면
-			else if (ret.size())
-				go();
-		}
-		// 마지막 글자가 숫자였다면
-		if (ret.size())
-			go();
+		tmp.push_back(s);
 	}
 
-	// 오름차순 정렬
-	sort(v.begin(), v.end(), cmp);
-
-	for(string i : v)
+	for (int i = 0; i < h; i++)
 	{
-		cout << i << "\n";
+		flag = false;
+		cnt = 0;
+		
+		for (int j = 0; j < w; j++)
+		{
+			if(flag == false && tmp[i][j] == '.')
+			{
+				ret[i][j] = -1;
+			}
+			else if(tmp[i][j] == 'c')
+			{
+				ret[i][j] = 0;
+				flag = true;
+				cnt = 0;
+			}
+			else if(flag == true && tmp[i][j] == '.')
+			{
+				cnt++;
+				ret[i][j] += cnt;
+			}
+		}
 	}
+
+	for(int i = 0; i < h; i++)
+	{
+		for(int j = 0; j < w; j++)
+		{
+			int b = ret[i][j];
+			cout << b << " ";
+
+			if (j + 1 == w)
+				cout << endl;
+		}
+	}
+
 	return 0;
 }
