@@ -7,21 +7,19 @@
 #include <map>
 using namespace std;
 
-typedef unsigned long long ll;
-
 int n,a;
-
+vector<int> tmp;
 int main()
 {
 	cin >> n;
 
-	for(int i = 0; i <n; i++)
+	for(int i = 0; i < n; i++)
 	{
 		cin >> a;
 
-		int ret2 { 0 }, ret5 { 0 };
+		int ret2 = 0, ret5 = 0 ;
 
-		for(int j = 2;j <= a; j *= 2)
+		for(int j = 2; j <= a; j *= 2)
 		{
 			ret2 += a / j;
 		}
@@ -30,9 +28,11 @@ int main()
 		{
 			ret5 += a / j;
 		}
-		// 2와 5가 있어야 10이 만들어지니까 서로 조합이 되는 최소의 수가 0의 갯수다.
-		cout << min(ret2, ret5) << endl;
+		tmp.push_back(min(ret2, ret5));
 	}
-	
+
+	for (auto it : tmp)
+		cout << it << "\n";
+
 	return 0;
 }
