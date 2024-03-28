@@ -2,37 +2,49 @@
 
 #include <iostream>
 #include <queue>
-#include <vector>
 #include <algorithm>
 #include <map>
-#include <stack>
-#include <string>
 #include <cstring>
 
 using namespace std;
-int n, m, a[51][51], visited[51][51], result = 987654321;
 
-vector<pair<int,int>> house;
-vector<pair<int, int>> chicken;
-vector<vector<int>> chickenList;
+const int dy[] = { -1, 0, 1, 0 };
+const int dx[] = { 0, 1, 0, -1 };
+ 
+int n, m, visited[54][54], mx;
+char a[54][54];
 
-
-
-void combi(int start, vector<int> v)
+void bfs(int y, int x)
 {
-	if(v.size() == m)
+	memset(visited, 0, sizeof(visited));
+	visited[y][x] = 1;
+
+	queue<pair<int, int>> q;
+	q.push({ y,x });
+	while(!q.empty())
 	{
-		chickenList.push_back(v);
-		return;
+		tie(y, x) = q.front();
+		q.pop();
+
+		for(int i = 0; i < 4; i++)
+		{
+			int ny = y + dy[i];
+			int nx = x + dx[i];
+
+			if(ny < 0 || nx < 0 || ny >= n || nx >= m)
+				continue;
+			if(visited[ny][nx])
+				continue;
+			 if(a[ny][nx] == 'W')
+				 continue;
+			// 가중치 쌓기
+			 visited[ny][nx] = visited[y][x] + 1;
+			 q.push({ ny, nx });
+			 mx = max(mx, visited[ny][nx]);
+		}
 	}
 
-	for(int i = start + 1; i < chicken.size(); i++)
-	{
-		v.push_back(i);
-		combi(i, v);
-		v.pop_back();
-	}
-	return;
+	return;  
 }
 
 
@@ -40,42 +52,26 @@ int main()
 {
 	cin >> n >> m;
 
-	for(int i = 0; i < n; i++)
+	for(int i = 0; i< n; i++)
 	{
-		for (int j = 0; j < n; j++)
+		for(int j = 0; j < m ; j++)
 		{
 			cin >> a[i][j];
-
-			if (a[i][j] == 1)
-			{
-				house.push_back({ i, j });
-			}
-			if (a[i][j] == 2)
-			{
-				chicken.push_back({ i,j });
-			}
 		}
 	}
 
-	vector<int> v;
-	combi(-1, v);
-	for(vector<int> cList : chickenList)
+
+	for(int i = 0; i < n; i++)
 	{
-		int ret = 0;
-		for(pair<int, int> home : house)
+		for(int j = 0; j < m; j++)
 		{
-			int _min = 987654321;
-			for(int ch : cList)
-			{
-				int _dist = abs(home.first - chicken[ch].first) + abs(home.second - chicken[ch].second);
-
-				_min = min(_min, _dist);
-			}
-			ret += _min;
+			// 특정 육지에서 다른 육지로 가는 최단거리 찾기 && 최대인 최단거리를 갱신하기
+			if (a[i][j] == 'L')
+				bfs(i, j);
 		}
-		result = min(result, ret);
 	}
-	cout << result << "\n";
+
+	cout << mx - 1 << "\n";
 
 	return 0;
 }
