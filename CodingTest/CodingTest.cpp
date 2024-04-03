@@ -7,65 +7,68 @@
 #include <cstring>
 
 using namespace std;
-#define prev aaa
-#define next aaaa
 
-const int max_n = 500000;
-int visited[2][max_n + 4], a, b, ok, turn = 1;
+#define y1 aa
+
+char a[301][301];
+int n, m, x1, y1, x2, y2;
+typedef pair<int, int> pii;
+int visited[301][301];
+const int dy[4] = { -1, 0, 1 , 0 };
+const int dx[4] = { 0, 1, 0, -1 };
+int ret;
+queue<int> q;
 
 int main()
 {
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	cin >> a >> b;
-
-	if( a== b)
+	scanf("%d %d", &n, &m);
+	scanf("%d %d %d %d", &y1, &x1, &y2, &x2);
+	y1--; x1--; y2--; x2--;
+	for(int i = 0; i < n; i++)
 	{
-		cout << 0 << "\n";
-		return 0;
+		scanf("%s", a[i]);
 	}
-	queue<int> q;
-	visited[0][a] = 1;
-	q.push(a);
-
-	while(!q.empty())
+	// 예를 들어 1,3 이면 1003이 나온다. 나누기, 모듈러 연산을 하면 1차원 배열로도 활용할 수 있음.
+	q.push(1000 * y1 + x1);
+	visited[y1][x1] = 1;
+	int cnt = 0;
+	
+	while(a[y2][x2] != '0')
 	{
-		b += turn;
-		if (b > max_n)
-			break;
-		if(visited[turn % 2][b])
+		//  1만났을 때 cnt++
+		cnt++;
+		queue<int> temp;
+		while(q.size())
 		{
-			ok = true;
-		}
-		int qSize = q.size();
-		for(int i =0; i < qSize; i++)
-		{
-			int x = q.front();
+			// 2차원 변수를 하나의 인트로 표현하는 방법
+			int y = q.front() / 1000;
+			int x = q.front() % 1000;
 			q.pop();
-			for(int nx : {x + 1, x - 1, x * 2})
+
+			for(int i = 0; i< 4; i ++)
 			{
-				if(nx < 0 || nx > max_n || visited[turn % 2][nx])
+				int ny = y + dy[i];
+				int nx = x + dx[i];
+				if(ny < 0 || ny >= n || nx < 0 || nx >= m || visited[ny][nx])
 					continue;
-				visited[turn % 2][nx] = visited[(turn + 1) % 2][x] + 1;
-				if (nx == b)
+				visited[ny][nx] = cnt;
+				if (a[ny][nx] != '0')
 				{
-					ok = 1;
-					break;
+					a[ny][nx] = '0';
+					// 0이 아닌 1을 만났을 때 temp에 보관
+					temp.push(1000 * ny + nx);
 				}
-				q.push(nx);
+				else
+					// 0일 땐 q 에 보관해 탐색함
+					q.push(1000 * ny + nx);
 			}
-			if (ok)
-				break;
 		}
-		if (ok)
-			break;
-		turn++;
+		// 주난이가 1을 만났을 때 기존의 q는 지우고 temp로 대입한다.
+		// 그럼 다시 while문에 1의 위치에서 새로 시작함
+		q = temp;
 	}
-	if (ok)
-		cout << turn << "\n";
-	else
-		cout << -1 << "\n";
+
+	printf("%d\n", visited[y2][x2]);
 
 	return 0;
 }
