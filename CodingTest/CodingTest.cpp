@@ -7,65 +7,59 @@
 #include <cstring>
 
 using namespace std;
-const int MAX = 200000;
-int visited[MAX + 4];
-long long cnt[MAX + 4];
-int n, m;
 
+int n;
+int a[1000004];
+bool flag = false;
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n >> m;
-
-	if(n==m)
+	for(int i = 2; i <= 1000000; i++)
 	{
-		// n과 m이 같은 값이 들어올 경우
-		puts("0");
-		puts("1");
-		return 0;
+		a[i] = i;
+	}
+	for(int i = 2; i * i <= 1000000; i++)
+	{
+		if(a[i] == 0)
+			continue;
+
+		for(int j = i * i; j <= 1000000; j += i)
+		{
+			a[j] = 0;
+		}
 	}
 
-	visited[n] = 1;
-	cnt[n] = 1;
-	// BFS는 q.push, !q.empty, int now = q.front(), q.pop()만이라도 기억해내자
-	queue<int> q;
-	q.push(n);
-	while(!q.empty())
+	while (true)
 	{
-		int now = q.front();
-		q.pop();
-		// -1, +1, *2 의 이동방식이 있다.
-		for(int next : {now -1, now +1, now*2})
+		cin >> n;
+		if (n == 0)
+			break;
+		flag = false;
+		for (int i = 1; i < n; i++)
 		{
-			// 오버플로우 체크
-			if( 0 <= next && next <= MAX)
+			if (a[i] == 0)
+				continue;
+			if (flag)
+				break;
+
+			for(int i = 3; i <= n; i += 2)
 			{
-				// 방문 안했다면
-				if(!visited[next])
+				// 에라토스테네스의 체를 이용해 n 의 최대값까지 소수를 구한다.
+				// i는 3부터 시작해 홀수를 만들기 위해 2씩 키워가며, i와 n-i가 소수인지 체크한다. i + n - i = n
+				// 완전 탐색으로 돌면 시간 복잡도가 너무 커지니까 브루트포스로 접근
+				if (a[i] != 0 && a[n - i] != 0)
 				{
-					q.push(next);
-					// 가중치 증가
-					visited[next] = visited[now] + 1;
-					// cnt[next] 는 처음 방문하는 곳이라면 0일 것이다.
-					// 이전까지 방문했던 가짓수를 다음 방문하는 곳의 가짓수에 더한다.
-					cnt[next] += cnt[now];
-				}
-				// 다만 최단 거리일 경우에만 가짓수를 추가하도록한다.
-				// 최단 거리가 아닌데 최단거리 가짓수를 추가하면 안됨.
-				else if(visited[next] == visited[now] +1)
-				{
-					cnt[next] += cnt[now];
+					cout << n << " = " << i << " + " << n - i << "\n";
+					flag = true;
+					break;
 				}
 			}
 		}
+		if (flag == false)
+			cout << "Goldbach's conjecture is Wrong.\n";
 	}
-	// 시간이 얼마나 걸리는 지 = 최단거리 - 1
-	cout << visited[m] - 1 << '\n';
-	cout << cnt[m] << '\n';
-		
-
 	return 0;
 }
 
