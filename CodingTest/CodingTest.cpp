@@ -10,51 +10,63 @@ using namespace std;
 #define prev aaa
 #define next aaaa
 
-const int max_n = 200004;
-int visited[max_n], prev[max_n], n, k, ret, here, cnt, next;
-vector<int> v;
-queue<int> q;
+const int max_n = 500000;
+int visited[2][max_n + 4], a, b, ok, turn = 1;
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n >> k;
-	visited[n] = 1;
-	q.push(n);
+	cin >> a >> b;
+
+	if( a== b)
+	{
+		cout << 0 << "\n";
+		return 0;
+	}
+	queue<int> q;
+	visited[0][a] = 1;
+	q.push(a);
+
 	while(!q.empty())
 	{
-		here = q.front();
-		q.pop();
-		if (here == k)
-		{
-			ret = visited[k];
+		b += turn;
+		if (b > max_n)
 			break;
-		}
-		for (int next : {here - 1, here + 1, here * 2})
+		if(visited[turn % 2][b])
 		{
-			if (next >= max_n || next < 0 || visited[next])
-				continue;
-			visited[next] = visited[here] + 1;
-			prev[next] = here;
-			q.push(next);
+			ok = true;
 		}
+		int qSize = q.size();
+		for(int i =0; i < qSize; i++)
+		{
+			int x = q.front();
+			q.pop();
+			for(int nx : {x + 1, x - 1, x * 2})
+			{
+				if(nx < 0 || nx > max_n || visited[turn % 2][nx])
+					continue;
+				visited[turn % 2][nx] = visited[(turn + 1) % 2][x] + 1;
+				if (nx == b)
+				{
+					ok = 1;
+					break;
+				}
+				q.push(nx);
+			}
+			if (ok)
+				break;
+		}
+		if (ok)
+			break;
+		turn++;
 	}
-	// prev 배열 안에 각자 이전의 값이 들어있음
-	for(int i = k ; i != n; i = prev[i])
-	{
-		v.push_back(i);
-	}
+	if (ok)
+		cout << turn << "\n";
+	else
+		cout << -1 << "\n";
 
-	v.push_back(n);
-	// 최단거리 -1이 최소 시간이다. 
-	cout << ret - 1 << '\n';
-	// 방문했던 것 뒤집기
-	reverse(v.begin(), v.end());
-
-	for (int i : v)
-		cout << i << ' ';
 	return 0;
 }
 
