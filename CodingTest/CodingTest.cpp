@@ -12,7 +12,7 @@ const int max_n = 21;
 const int dy[4] = { 1, 0, -1,0 };
 const int dx[4] = { 0, 1, 0, -1 };
 
-int R, C, visited[max_n], ret;
+int R, C, visited[30], ret;
 char a[max_n][max_n];
 
 void go(int y, int x, int cnt)
@@ -39,6 +39,7 @@ void go(int y, int x, int cnt)
 			visited[next] = 0;
 		}
 	}
+	
 	return;
 }
 
@@ -56,12 +57,12 @@ int main()
 			cin >> a[i][j];
 		}
 	}
-	// 해당 문자열에 방문했는지 체크
+	// 해당 문자열에 방문했는지 체크, 문자열 기반으로 잡았기 때문에 최대 배열 사이즈는 30으로 잡았음.
 	visited[(int)a[0][0] - 'A'] = 1;
 	// 출발위치, 최대 거리
 	go(0, 0, 1);
 
-	cout << ret << "\n";
+	cout << ret << '\n';
 	return 0;
 }
 
