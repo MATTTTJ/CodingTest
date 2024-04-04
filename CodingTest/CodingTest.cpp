@@ -5,41 +5,49 @@
 #include <algorithm>
 #include <map>
 #include <cstring>
+#include <string>
 
 using namespace std;
 
-const int max_n = 21;
-const int dy[4] = { 1, 0, -1,0 };
-const int dx[4] = { 0, 1, 0, -1 };
+int n, check[10];
+char a[20];
+vector<string> ret;
 
-int R, C, visited[30], ret;
-char a[max_n][max_n];
-
-void go(int y, int x, int cnt)
+bool good(char x, char y, char op)
 {
-	// 최댓값 갱신
-	ret = max(ret, cnt);
+	// 숫자와 오퍼레이터가 맞는지 체크
+	if (x < y && op == '<') 
+		return true;
+	if (x > y && op == '>')
+		return true;
 
-	for(int i = 0; i < 4; i++)
+	return false;
+}
+
+void go(int idx, string num)
+{
+	if(idx == n + 1)
 	{
-		int ny = y + dy[i];
-		int nx = x + dx[i];
-		 if(ny < 0 || ny >= R || nx < 0 || nx >= C)
-			 continue;
-		// 다음 방문할 글자를 인티저로 변환 후
-		 int next = (int)(a[ny][nx] - 'A');
-		 // 인티저 배열이 방문안한 0이라면
-		if(visited[next] == 0)
+		ret.push_back(num);
+
+		return;
+	}
+	// 0~9까지의 수
+	for(int i = 0; i <= 9; i++)
+	{
+		// 사용한 숫자라면
+		if(check[i])
+			continue;
+		// 처음 사용하는 숫자라면 || 숫자와 오퍼가 합당한지 체크하는 함수를 통과한다면
+		// i + '0' -> 숫자에 문자를 더해서 실제 숫자로 만든다. 문자로써 비교하게 만들어준다.
+		if(idx == 0 || good(num[idx - 1], i + '0', a[idx - 1]))
 		{
-			// 해당 글자 배열의 값을 1로 변환 후
-			visited[next] = 1;
-			// 탐색한다. 탐색할 때 이미 방문됬던 글자 때문에 방문이 안된다면
-			go(ny, nx, cnt + 1);
-			// 되돌아와 0으로 바꾸고 다른 방향으로 탐색한다. 
-			visited[next] = 0;
+			check[i] = 1;
+			go(idx + 1, num + to_string(i));
+			// check[i] = 1인 상태에서 예를 들면 01인 상태에서 01 + 2~9 값을 못찾으면 다시 0 + 2~9 로 돌아가며 1은 check를 풀어준다.
+			check[i] = 0;
 		}
 	}
-	
 	return;
 }
 
@@ -48,21 +56,18 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> R >> C;
+	cin >> n;
 
-	for(int i = 0; i < R; i++)
+	for(int i = 0; i < n; i++)
 	{
-		for(int j = 0; j < C; j++)
-		{
-			cin >> a[i][j];
-		}
+		cin >> a[i];
 	}
-	// 해당 문자열에 방문했는지 체크, 문자열 기반으로 잡았기 때문에 최대 배열 사이즈는 30으로 잡았음.
-	visited[(int)a[0][0] - 'A'] = 1;
-	// 출발위치, 최대 거리
-	go(0, 0, 1);
+	// 보통의 완탐과 같이 인덱스가 증가하는 형식의 함수
+	go(0, "");
+	// 완전탐색을 기반으로 만들어진 컨테이너를 정렬한다. 최댓값과 최소값을 뱉어냄
+	sort(ret.begin(), ret.end());
+	cout << ret[ret.size() - 1] << "\n" << ret[0] << "\n";
 
-	cout << ret << '\n';
 	return 0;
 }
 
