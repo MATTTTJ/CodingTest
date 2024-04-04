@@ -8,76 +8,38 @@
 
 using namespace std;
 
-const int max_n = 1501;
-const int dy[4] = { 1, 0, -1, 0 };
+const int max_n = 21;
+const int dy[4] = { 1, 0, -1,0 };
 const int dx[4] = { 0, 1, 0, -1 };
-int visited_swan[max_n][max_n], visited[max_n][max_n], R, C, day, swanY, swanX, y, x;
+
+int R, C, visited[max_n], ret;
 char a[max_n][max_n];
-queue<pair<int, int>> waterQ, water_tempQ, swanQ, swan_tempQ;
-string s;
 
-void Qclear(queue<pair<int,int>> &q)
+void go(int y, int x, int cnt)
 {
-	queue<pair<int, int>> empty;
-	swap(q, empty);
-}
+	// 최댓값 갱신
+	ret = max(ret, cnt);
 
-void water_melting()
-{
-	while(waterQ.size())
+	for(int i = 0; i < 4; i++)
 	{
-		// 처음 모든 물의 위치에서 만난 빙판 X 값을 보관해둘 수 있음.
-		// 그 다음 모아둔 모든 첫번째 빙판들 위치에서 그 다음 빙판을 보관하도록 함
-		tie(y, x) = waterQ.front();
-		waterQ.pop();
-		for (int i = 0; i < 4; i++)
+		int ny = y + dy[i];
+		int nx = x + dx[i];
+		 if(ny < 0 || ny >= R || nx < 0 || nx >= C)
+			 continue;
+		// 다음 방문할 글자를 인티저로 변환 후
+		 int next = (int)(a[ny][nx] - 'A');
+		 // 인티저 배열이 방문안한 0이라면
+		if(visited[next] == 0)
 		{
-			int ny = y + dy[i];
-			int nx = x + dx[i];
-
-			if (ny < 0 || ny >= R || nx < 0 || nx >= C || visited[ny][nx])
-				continue;
-			// 다음 이동 위치가 얼음이라면 물로 변경하고 물로 변경한 위치를 tempQ 에 보관한다.
-			// 그래야 다음날 물로 바꿀 얼음의 위치를 알 수 있기 때문
-			if(a[ny][nx] == 'X')
-			{
-				visited[ny][nx] = 1;
-				water_tempQ.push({ ny, nx });
-				a[ny][nx] = '.';
-			}
+			// 해당 글자 배열의 값을 1로 변환 후
+			visited[next] = 1;
+			// 탐색한다. 탐색할 때 이미 방문됬던 글자 때문에 방문이 안된다면
+			go(ny, nx, cnt + 1);
+			// 되돌아와 0으로 바꾸고 다른 방향으로 탐색한다. 
+			visited[next] = 0;
 		}
 	}
-}
-
-bool move_swan()
-{
-	// 현재 백조가 있다면
-	while(swanQ.size())
-	{
-		// 현재 위치 받기
-		tie(y, x) = swanQ.front();
-		swanQ.pop();
-
-		for(int i = 0; i < 4; i ++)
-		{
-			int ny = y + dy[i];
-			int nx = x + dx[i];
-			if(ny < 0 || ny >= R || nx < 0 || nx >= C || visited_swan[ny][nx])
-				continue;
-			// 백조가 방문한 위치 체크
-			visited_swan[ny][nx] = 1;
-			// 물이라면 계속해서 이동해야 하기 때문에 swanQ에 푸쉬
-			if (a[ny][nx] == '.')
-				swanQ.push({ ny,nx });
-			// 얼음이라면 멈춰야하기 때문에 현재 위치를 보관해둘 tempQ에 푸쉬
-			else if (a[ny][nx] == 'X')
-				swan_tempQ.push({ ny,nx });
-			// 다른 백조를 만났다면 true
-			else if (a[ny][nx] == 'L')
-				return true;
-		}
-	}
-	return false;
+	return;
 }
 
 int main()
@@ -89,50 +51,17 @@ int main()
 
 	for(int i = 0; i < R; i++)
 	{
-		cin >> s;
 		for(int j = 0; j < C; j++)
 		{
-			a[i][j] = s[j];
-			// 백조의 위치 보관
-			if(a[i][j] == 'L')
-			{
-				swanY = i;
-				swanX = j;
-			}
-			// 물의 위치를 Q에 보관, 백조의 위치 또한 물이다.
-			if(a[i][j] == '.' || a[i][j] == 'L')
-			{
-				// visited 배열은 얼음을 물로 녹이기 위한 배열이기 때문에 이미 물인 위치는 방문처리를 하도록 한다.
-				visited[i][j] = 1;
-				// 물 큐에 보관
-				waterQ.push({ i,j });
-			}
+			cin >> a[i][j];
 		}
 	}
-	// 백조의 현재 위치를 스완Q에 보관
-	swanQ.push({ swanY, swanX });
-	// 백조 방문체크
-	visited_swan[swanY][swanX] = 1;
-	while(true)
-	{
-		// 백조가 움직인다. 다른 백조를 만나면 브레이크
-		if (move_swan())
-			break;
-		// 물이 녹는다.
-		water_melting();
-		// 녹아서 tempQ에 추가된 물을 현재 물을 보관중인 waterQ에 대입
-		waterQ = water_tempQ;
-		// 새롭게 이동한 백조의 위치를 swanQ에 대입
-		swanQ = swan_tempQ;
-		// 사용했던 tempQ는 초기화
-		Qclear(water_tempQ);
-		Qclear(swan_tempQ);
-		// 날짜 추가
-		day++;
-	}
+	// 해당 문자열에 방문했는지 체크
+	visited[(int)a[0][0] - 'A'] = 1;
+	// 출발위치, 최대 거리
+	go(0, 0, 1);
 
-	cout << day << "\n";
-
+	cout << ret << "\n";
 	return 0;
 }
 
