@@ -9,46 +9,47 @@
 
 using namespace std;
 
-int n, check[10];
-char a[20];
-vector<string> ret;
+const int INF = 987654321;
 
-bool good(char x, char y, char op)
+int n, m, h, a, b, ret = INF, visited[34][34];
+bool check()
 {
-	// 숫자와 오퍼레이터가 맞는지 체크
-	if (x < y && op == '<') 
-		return true;
-	if (x > y && op == '>')
-		return true;
-
-	return false;
+	for(int i =1; i <= n; i++)
+	{
+		int start = i;
+		for(int j =  1; j <= h; j++)
+		{
+			if (visited[j][start])
+				start++;
+			else if (visited[j][start - 1])
+				start--;
+		}
+		if (start != i)
+			return false;
+	}
+	return true;
 }
 
-void go(int idx, string num)
+void go(int here, int cnt)
 {
-	if(idx == n + 1)
+	if (cnt > 3 || cnt >= ret)
+		return;
+	if(check())
 	{
-		ret.push_back(num);
-
+		ret = min(ret, cnt);
 		return;
 	}
-	// 0~9까지의 수
-	for(int i = 0; i <= 9; i++)
+	for(int i = here; i <= h; i++)
 	{
-		// 사용한 숫자라면
-		if(check[i])
-			continue;
-		// 처음 사용하는 숫자라면 || 숫자와 오퍼가 합당한지 체크하는 함수를 통과한다면
-		// i + '0' -> 숫자에 문자를 더해서 실제 숫자로 만든다. 문자로써 비교하게 만들어준다.
-		if(idx == 0 || good(num[idx - 1], i + '0', a[idx - 1]))
+		for(int j = 1; j < n; j++)
 		{
-			check[i] = 1;
-			go(idx + 1, num + to_string(i));
-			// check[i] = 1인 상태에서 예를 들면 01인 상태에서 01 + 2~9 값을 못찾으면 다시 0 + 2~9 로 돌아가며 1은 check를 풀어준다.
-			check[i] = 0;
+			if(visited[i][j] || visited[i][j-1] || visited[i][j +1])
+				continue;
+			visited[i][j] = 1;
+			go(i, cnt + 1);
+			visited[i][j] = 0;
 		}
 	}
-	return;
 }
 
 int main()
@@ -56,17 +57,16 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n;
-
-	for(int i = 0; i < n; i++)
+	cin >> n >> m >> h;
+	for(int i =0; i < m; i++)
 	{
-		cin >> a[i];
+		cin >> a >> b;
+		visited[a][b] = 1;
 	}
-	// 보통의 완탐과 같이 인덱스가 증가하는 형식의 함수
-	go(0, "");
-	// 완전탐색을 기반으로 만들어진 컨테이너를 정렬한다. 최댓값과 최소값을 뱉어냄
-	sort(ret.begin(), ret.end());
-	cout << ret[ret.size() - 1] << "\n" << ret[0] << "\n";
+
+	go(1, 0);
+
+	cout << ((ret == INF) ? -1 : ret) << "\n";
 
 	return 0;
 }
