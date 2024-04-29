@@ -7,90 +7,35 @@
 #include <cstring>
 #include <string>
 #include <unordered_map>
-#define MAX 51
 
 using namespace std;
 
-
-int n, maxCandy;
-char candy[MAX][MAX];
-
-void check()
-{
-	for(int i = 0; i < n; i++)
-	{
-		int count = 1;
-		for(int j = 0; j < n; j++)
-		{
-			if(candy[i][j] == candy[i][j+1])
-			{
-				count++;
-			}
-			else
-			{
-				if (maxCandy < count)
-					maxCandy = count;
-				count = 1;
-			}
-		}
-	}
-
-	for (int i = 0; i < n; i++)
-	{
-		int count = 1;
-		for (int j = 0; j < n; j++)
-		{
-			if (candy[j][i] == candy[j+1][i])
-			{
-				count++;
-			}
-			else
-			{
-				if (maxCandy < count)
-					maxCandy = count;
-				count = 1;
-			}
-		}
-	}
-	
-}
+int E, S, M, e, s, m;
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n;
+	cin >> E >> S >> M;
 
-	for(int i = 0; i < n; i++)
-	{
-		for(int j = 0; j < n; j++)
-		{
-			cin >> candy[i][j];
-		}
-	}
+	E %= 15;
+	S %= 28;
+	M %= 19;
 
-	// 행 단위로 교환해가며 가장 긴 부분을 체크함
-	for(int i = 0; i < n; i++)
+	// i를 제한할 순 없지만 보기에 나온 최대 값으로 제한 함
+	for(int i = 1; i <= 7980; i++)
 	{
-		for(int j = 0; j < n-1; j++)
+		e = i % 15;
+		s = i % 28;
+		m = i % 19;
+		// 입력된 값의 제한 값으로 나머지를 구한 뒤 모든 값들의 나머지 값이 동일해지는 지
+		if(E == e && S == s && M == m)
 		{
-			swap(candy[i][j], candy[i][j + 1]);
-			check();
-			swap(candy[i][j], candy[i][j + 1]);
+			cout << i;
+			break;
 		}
 	}
-	// 열 단위로 교환해가며 가장 긴 부분을 체크함
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n - 1; j++)
-		{
-			swap(candy[j][i], candy[j+1][i]);
-			check();
-			swap(candy[j][i], candy[j+1][i]);
-		}
-	}
-	cout << maxCandy << '\n';
 
 	return 0;
 }
