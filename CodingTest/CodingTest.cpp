@@ -10,8 +10,9 @@
 
 using namespace std;
 
-int n, m;
-int tmp, dst;
+int n, m, tmp = -1, sum;
+float ans, dst;
+
 int a[101];
 
 int main()
@@ -19,30 +20,23 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n >> m;
+	cin >> n;
 
-	for (int i = 1; i < n + 1; i++)
+	for(int i = 0; i < n; i++)
 	{
-		a[i] = i;
-
-	}
-	for (int i = 1; i <= m; i++)
-	{
-		cin >> tmp >> dst;
-
-		if (tmp != dst)
+		cin >> m;
+		sum += m;
+		if (m > tmp)
 		{
-			for (int j = 0; j <= (dst - tmp) / 2; j++)
-			{
-				swap(a[tmp + j], a[dst - j]);
-			}
+			tmp = m;
+			dst = tmp * 0.01;
 		}
 	}
 
-	for (int i = 1; i < n + 1; i++)
-	{
-		cout << a[i] << " ";
-	}
+	ans = sum / dst;
+
+	cout << ans / n;
+
 	return 0;
 }
 
