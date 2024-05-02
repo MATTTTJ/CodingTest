@@ -10,30 +10,31 @@
 
 using namespace std;
 
-int n[9];
-int cnt = -1, ans;
-vector<int> v;
+int n, m;
+int tmp, dst, num;
+int a[101];
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	for(int i = 0; i < 9; i++)
-	{
-		cin >> n[i];
-	}
+	cin >> n >> m;
 
-	for (int i = 0; i < 9; i++)
+	for(int i = 0; i < m; i++)
 	{
-		if (n[i] > cnt)
+		cin >> tmp >> dst >> num;
+
+		for(int j = tmp; j <= dst; j++)
 		{
-			cnt = n[i];
-			ans = i;
+			a[j] = num;
 		}
 	}
 
-	cout << cnt << "\n" << ans+1;
+	for(int i = 1; i <= n; i++)
+	{
+		cout << a[i] << " ";
+	}
 
 	return 0;
 }
