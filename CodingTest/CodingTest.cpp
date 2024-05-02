@@ -11,25 +11,26 @@
 using namespace std;
 
 int n, m;
-bool a[31];
+bool a[42];
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
-	fill(&a[0], &a[0] + 31, false);
-	for (int i = 0; i < 28; i++)
+	fill(&a[0], &a[0] + 42, false);
+	for (int i = 0; i < 10; i++)
 	{
 		cin >> n;
-		a[n-1] = true;
+		a[n % 42] = true;
 	}
 
-	for(int i = 0; i < 30; i++)
+	for(int i = 0; i < 42; i++)
 	{
-		if (!a[i])
-			cout << i+1 << "\n";
+		if (a[i])
+			m++;
 	}
 
+	cout << m;
 
 	return 0;
 }
