@@ -11,27 +11,38 @@
 using namespace std;
 
 int n, m;
-bool a[42];
+int tmp, dst;
+int a[101];
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
-	fill(&a[0], &a[0] + 42, false);
-	for (int i = 0; i < 10; i++)
+
+	cin >> n >> m;
+
+	for (int i = 1; i < n + 1; i++)
 	{
-		cin >> n;
-		a[n % 42] = true;
+		a[i] = i;
+
+	}
+	for (int i = 1; i <= m; i++)
+	{
+		cin >> tmp >> dst;
+
+		if (tmp != dst)
+		{
+			for (int j = 0; j <= (dst - tmp) / 2; j++)
+			{
+				swap(a[tmp + j], a[dst - j]);
+			}
+		}
 	}
 
-	for(int i = 0; i < 42; i++)
+	for (int i = 1; i < n + 1; i++)
 	{
-		if (a[i])
-			m++;
+		cout << a[i] << " ";
 	}
-
-	cout << m;
-
 	return 0;
 }
 
