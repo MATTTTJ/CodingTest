@@ -10,34 +10,30 @@
 
 using namespace std;
 
-int n, m,l;
+int n[9];
+int cnt = -1, ans;
+vector<int> v;
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n >> m >> l;
+	for(int i = 0; i < 9; i++)
+	{
+		cin >> n[i];
+	}
 
-	if(n == m || m == l || n == l)
+	for (int i = 0; i < 9; i++)
 	{
-		if (n == m && m == l && n == l)
+		if (n[i] > cnt)
 		{
-			cout << 10000 + 1000 * n;
+			cnt = n[i];
+			ans = i;
 		}
-		else if(m == l)
-			cout << 1000 + m * 100;
-		else
-			cout << 1000 + n * 100;
 	}
-	else
-	{
-		int big = -123456789;
-		big = max(n, big);
-		big = max(m, big);
-		big = max(l, big);
-		cout << big * 100;
-	}
+
+	cout << cnt << "\n" << ans+1;
 
 	return 0;
 }
