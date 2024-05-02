@@ -19,23 +19,25 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
+	for(int i = 0; i < 101; i++)
+	{
+		a[i] = i;
+	}
+
+
 	cin >> n >> m;
 
 	for(int i = 0; i < m; i++)
 	{
-		cin >> tmp >> dst >> num;
+		cin >> tmp >> dst;
 
-		for(int j = tmp; j <= dst; j++)
-		{
-			a[j] = num;
-		}
+		swap(a[tmp], a[dst]);
 	}
 
 	for(int i = 1; i <= n; i++)
 	{
 		cout << a[i] << " ";
 	}
-
 	return 0;
 }
 
