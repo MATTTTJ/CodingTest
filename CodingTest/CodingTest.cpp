@@ -10,32 +10,35 @@
 
 using namespace std;
 
-string s;
-int n, m;
-string ans;
+string s, word;
+int token, idx, cnt = 1;
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n;
+	getline(cin, s);
 
-	for(int i = 0; i < n; i++)
-	{
-		cin >> m >> s;
-
-		ans = "";
-		for(char it : s)
-		{
-			for(int j = 0; j < m; j++)
-			{
-				ans += it;
-			}
-		}
-		cout << ans << "\n";
+	if ((s.length() == 1 && s[0] == ' ') || s.length() == 0) {
+		cout << 0;
+		return 0;
 	}
-	
+
+	for(int i = 0; i < s.length(); i++)
+	{
+		if(s[i] == ' ')
+		{
+			cnt++;
+		}
+	}
+
+	if (s[0] == ' ')
+		cnt--;
+	if(s[s.length() - 1] == ' ')
+		cnt--;
+
+	cout << cnt;
 	return 0;
 }
 
