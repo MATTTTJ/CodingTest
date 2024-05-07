@@ -10,32 +10,34 @@
 
 using namespace std;
 
-int n, m, tmp = -1, sum;
-float ans, dst;
-
-int a[101];
+string s;
+int a[26], cnt;
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n;
+	fill(&a[0], &a[0] + 26, -1);
 
-	for(int i = 0; i < n; i++)
+	cin >> s;
+
+	for(auto it : s)
 	{
-		cin >> m;
-		sum += m;
-		if (m > tmp)
+		if(a[(int)it - 'a'] != -1)
 		{
-			tmp = m;
-			dst = tmp * 0.01;
+			cnt++;
+			continue;
 		}
+
+		a[(int)it - 'a'] = cnt;
+		cnt++;
 	}
 
-	ans = sum / dst;
-
-	cout << ans / n;
+	for(int i = 0; i < 26; i++)
+	{
+		cout << a[i] << " ";
+	}
 
 	return 0;
 }
