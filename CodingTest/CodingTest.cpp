@@ -11,34 +11,31 @@
 using namespace std;
 
 string s;
-int a[26], cnt;
+int n, m;
+string ans;
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	fill(&a[0], &a[0] + 26, -1);
+	cin >> n;
 
-	cin >> s;
-
-	for(auto it : s)
+	for(int i = 0; i < n; i++)
 	{
-		if(a[(int)it - 'a'] != -1)
+		cin >> m >> s;
+
+		ans = "";
+		for(char it : s)
 		{
-			cnt++;
-			continue;
+			for(int j = 0; j < m; j++)
+			{
+				ans += it;
+			}
 		}
-
-		a[(int)it - 'a'] = cnt;
-		cnt++;
+		cout << ans << "\n";
 	}
-
-	for(int i = 0; i < 26; i++)
-	{
-		cout << a[i] << " ";
-	}
-
+	
 	return 0;
 }
 
