@@ -18,18 +18,29 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> s >> ss;
+	cin >> s;
 
-	swap(s[0], s[2]);
-	swap(ss[0], ss[2]);
-
-	if (stoi(s) > stoi(ss))
+	for(char it : s)
 	{
-		cout << s;
+		if (it - 'A' <= 2)
+			n += 3;
+		else if (it - 'A' <= 5)
+			n += 4;
+		else if (it - 'A' <= 8)
+			n += 5;
+		else if (it - 'A' <= 11)
+			n += 6;
+		else if (it - 'A' <= 14)
+			n += 7;
+		else if (it - 'A' <= 18)
+			n += 8;
+		else if (it - 'A' <= 21)
+			n += 9;
+		else if (it - 'A' <= 25)
+			n += 10;
 	}
-	else
-		cout << ss;
 
+	cout << n;
 	return 0;
 }
 
