@@ -10,37 +10,20 @@
 
 using namespace std;
 
-string s, ss;
-int n, m;
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
-
-	cin >> s;
-
-	for(char it : s)
+	string s;
+	while(true)
 	{
-		if (it - 'A' <= 2)
-			n += 3;
-		else if (it - 'A' <= 5)
-			n += 4;
-		else if (it - 'A' <= 8)
-			n += 5;
-		else if (it - 'A' <= 11)
-			n += 6;
-		else if (it - 'A' <= 14)
-			n += 7;
-		else if (it - 'A' <= 18)
-			n += 8;
-		else if (it - 'A' <= 21)
-			n += 9;
-		else if (it - 'A' <= 25)
-			n += 10;
+		getline(cin, s);
+		if (s == "")
+			break;
+		cout << s << "\n";
 	}
 
-	cout << n;
 	return 0;
 }
 
