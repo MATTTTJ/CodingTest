@@ -10,35 +10,26 @@
 
 using namespace std;
 
-string s, word;
-int token, idx, cnt = 1;
+string s, ss;
+int n, m;
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	getline(cin, s);
+	cin >> s >> ss;
 
-	if ((s.length() == 1 && s[0] == ' ') || s.length() == 0) {
-		cout << 0;
-		return 0;
-	}
+	swap(s[0], s[2]);
+	swap(ss[0], ss[2]);
 
-	for(int i = 0; i < s.length(); i++)
+	if (stoi(s) > stoi(ss))
 	{
-		if(s[i] == ' ')
-		{
-			cnt++;
-		}
+		cout << s;
 	}
+	else
+		cout << ss;
 
-	if (s[0] == ' ')
-		cnt--;
-	if(s[s.length() - 1] == ' ')
-		cnt--;
-
-	cout << cnt;
 	return 0;
 }
 
