@@ -19,33 +19,20 @@ int main()
 
 	cin >> n;
 
-	for(int i = 1; i <= n; i++)
+	for(int i = 0; i < n; i++)
 	{
-		for(int j = n - i; j > 0; j--)
+		cin >> m;
+		sum += m;
+		if (m > tmp)
 		{
-			cout << " ";
+			tmp = m;
+			dst = tmp * 0.01;
 		}
-
-		for(int j = 2 *i -1; j > 0; j--)
-		{
-			cout << "*";
-		}
-		cout << endl;
 	}
 
-	for(int i = 1; i < n; i++)
-	{
-		for(int j = 0; j < i; j++)
-		{
-			cout << " ";
-		}
+	ans = sum / dst;
 
-		for(int j = 2 * (n-i) -1; j >0; j--)
-		{
-			cout << "*";
-		}
-		cout << endl;
-	}
+	cout << ans / n;
 
 	return 0;
 }
