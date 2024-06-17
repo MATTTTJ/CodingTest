@@ -10,10 +10,7 @@
 
 using namespace std;
 
-int n, m, tmp = -1, sum;
-float ans, dst;
-
-int a[101];
+int n;
 
 int main()
 {
@@ -22,20 +19,33 @@ int main()
 
 	cin >> n;
 
-	for(int i = 0; i < n; i++)
+	for(int i = 1; i <= n; i++)
 	{
-		cin >> m;
-		sum += m;
-		if (m > tmp)
+		for(int j = n - i; j > 0; j--)
 		{
-			tmp = m;
-			dst = tmp * 0.01;
+			cout << " ";
 		}
+
+		for(int j = 2 *i -1; j > 0; j--)
+		{
+			cout << "*";
+		}
+		cout << endl;
 	}
 
-	ans = sum / dst;
+	for(int i = 1; i < n; i++)
+	{
+		for(int j = 0; j < i; j++)
+		{
+			cout << " ";
+		}
 
-	cout << ans / n;
+		for(int j = 2 * (n-i) -1; j >0; j--)
+		{
+			cout << "*";
+		}
+		cout << endl;
+	}
 
 	return 0;
 }
