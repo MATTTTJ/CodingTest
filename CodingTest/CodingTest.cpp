@@ -10,29 +10,47 @@
 
 using namespace std;
 
-int n;
+int a[26], cnt = 0;
+string s;
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n;
+	cin >> s;
 
-	for(int i = 0; i < n; i++)
+	for(int i = 0; i < s.length(); i++)
 	{
-		cin >> m;
-		sum += m;
-		if (m > tmp)
+		if (s[i] < 97)
 		{
-			tmp = m;
-			dst = tmp * 0.01;
+			a[s[i] - 65]++;
+		}
+		else
+			a[s[i] - 97]++;
+	}
+
+	int max = 0, max_idx = 0;
+
+	for(int i = 0; i < 26; i++)
+	{
+		if(max < a[i])
+		{
+			max = a[i];
+			max_idx = i;
 		}
 	}
 
-	ans = sum / dst;
+	for(int i =0; i < 26; i++)
+	{
+		if (max == a[i])
+			cnt++;
+	}
 
-	cout << ans / n;
+	if (cnt > 1)
+		cout << "?";
+	else
+		cout << (char)(max_idx + 65);
 
 	return 0;
 }
