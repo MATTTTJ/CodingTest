@@ -10,47 +10,29 @@
 
 using namespace std;
 
-int a[26], cnt = 0;
-string s;
+vector<string> vec_s = { "c=", "c-", "dz=", "d-", "lj", "nj", "s=", "z=" };
+int idx;
+string str;
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> s;
+	cin >> str;
 
-	for(int i = 0; i < s.length(); i++)
+	for(int i = 0; i < vec_s.size(); i++)
 	{
-		if (s[i] < 97)
+		while(true)
 		{
-			a[s[i] - 65]++;
-		}
-		else
-			a[s[i] - 97]++;
-	}
-
-	int max = 0, max_idx = 0;
-
-	for(int i = 0; i < 26; i++)
-	{
-		if(max < a[i])
-		{
-			max = a[i];
-			max_idx = i;
+			idx = (int)str.find(vec_s[i]);
+			if (idx == string::npos)
+				break;
+			str.replace(idx, vec_s[i].length(), "#");
 		}
 	}
 
-	for(int i =0; i < 26; i++)
-	{
-		if (max == a[i])
-			cnt++;
-	}
-
-	if (cnt > 1)
-		cout << "?";
-	else
-		cout << (char)(max_idx + 65);
+	cout << str.length();
 
 	return 0;
 }
