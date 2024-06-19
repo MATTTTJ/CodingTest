@@ -10,46 +10,27 @@
 
 using namespace std;
 
-int a[104][104], b[104][104], n, m;
-int cnt = 1;
+int a[9][9], max_idx = -123, n, m;
+
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n >> m;
-
-	for (int i = 0; i < n; i++)
+	for(int i = 0; i < 9; i++)
 	{
-		for (int j = 0; j < m; j++)
+		for(int j = 0; j < 9; j++)
 		{
 			cin >> a[i][j];
+			if (max_idx < a[i][j])
+			{
+				max_idx = a[i][j];
+				n = i+1; m = j+1;
+			}
 		}
 	}
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < m; j++)
-		{
-			cin >> b[i][j];
-		}
-	}
-
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < m; j++)
-		{
-			a[i][j] += b[i][j];
-		}
-	}
-
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < m; j++)
-		{
-			cout << a[i][j] << " ";
-		}
-		cout << endl;
-	}
+	cout << max_idx << endl;
+	cout << n << " " << m;
 
 	return 0;
 }
