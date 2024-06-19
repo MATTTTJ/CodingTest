@@ -10,51 +10,46 @@
 
 using namespace std;
 
-vector<pair<string, float>> var = { {"A+", 4.5}, {"A0", 4.0}, {"B+", 3.5}, {"B0", 3.0}, {"C+", 2.5}, {"C0", 2.0}, {"D+", 1.5}, {"D0", 1.0}, {"F", 0}, {"P", 0}};
-
-vector<pair<string, float>> tmp;
-
-string sub, s;
-float n, sum;
-float Allsum;
-
+int a[104][104], b[104][104], n, m;
+int cnt = 1;
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	for(int i = 0; i < 20; i++)
+	cin >> n >> m;
+
+	for (int i = 0; i < n; i++)
 	{
-		cin >> sub >> n >> s;
-		if(s != "P")
-			sum += n;
-		tmp.push_back({ s, n });
+		for (int j = 0; j < m; j++)
+		{
+			cin >> a[i][j];
+		}
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cin >> b[i][j];
+		}
 	}
 
-	for(auto it : tmp)
+	for (int i = 0; i < n; i++)
 	{
-		// 패스는 통과
-		if(it.first.find("P") != string::npos)
+		for (int j = 0; j < m; j++)
 		{
-			continue;
-		}
-		// 패스가 아닌 경우 학점과 전공 평균을 곱한 뒤, 학점을 전부 더한 값으로 나눈다. 
-		else
-		{
-			float mul = 0;
-			for(auto temp : var)
-			{
-				// 같은 글자 찾음
-				if(mul == 0 && (temp.first.find(it.first) != string::npos))
-				{
-					mul = temp.second;
-					break;
-				}
-			}
-			Allsum += it.second * mul ;
+			a[i][j] += b[i][j];
 		}
 	}
-	cout << Allsum / sum;
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cout << a[i][j] << " ";
+		}
+		cout << endl;
+	}
 
 	return 0;
 }
