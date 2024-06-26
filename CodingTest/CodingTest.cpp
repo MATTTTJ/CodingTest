@@ -10,28 +10,36 @@
 
 using namespace std;
 
-int a[9][9], max_idx = -123, n, m;
+const int MAX = 100;
 
+int a[100][100] = { 0, };
+int n, m, cnt, ans;
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	for(int i = 0; i < 9; i++)
+	cin >> cnt;
+
+	for(int i = 0; i < cnt; i++)
 	{
-		for(int j = 0; j < 9; j++)
+		cin >> n >> m;
+
+		for(int i = n; i < n + 10; i++)
 		{
-			cin >> a[i][j];
-			if (max_idx < a[i][j])
+			for (int j = m; j < m + 10; j++)
 			{
-				max_idx = a[i][j];
-				n = i+1; m = j+1;
+				// 0에서 1로 체크하는 순간만 색종이의 넓이로 판단
+				if (!a[i][j])
+				{
+					ans++;
+
+					a[i][j] = 1;
+				}
 			}
 		}
 	}
-	cout << max_idx << endl;
-	cout << n << " " << m;
-
+	cout << ans;
 	return 0;
 }
 
