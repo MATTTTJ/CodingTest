@@ -11,7 +11,7 @@
 using namespace std;
 
 string b_num;
-int n, sum;
+int n, b;
 
 
 int main()
@@ -19,24 +19,27 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> b_num >> n;
+	cin >> n >> b;
 
-	for(int i = 0; i < (int)b_num.length(); i++)
+	while(n != 0)
 	{
-		// 해당 글자
-		int tmp = b_num[(int)b_num.length() - (i + 1)];
-		if ('0' <= tmp && tmp <= '9')
+		int tmp = n % b;
+		if(tmp > 9)
 		{
-			tmp = tmp - '0';
+			// - 10 + 'A' 혹은 + 55
+			tmp = tmp - 10 + 'A';
+			b_num += tmp;
 		}
 		else
 		{
-			tmp = tmp + 10 - 'A';
+			// 10 이하의 수
+			b_num += ('0' + tmp);
 		}
-		// 10진법 변환 방법
-		sum += (tmp * (int)pow(n, i));
+		n /= b;
 	}
-	cout << sum << '\n';
+	reverse(b_num.begin(), b_num.end());
+
+	cout << b_num << '\n';
 
 	return 0;
 }
