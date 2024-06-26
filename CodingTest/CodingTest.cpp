@@ -10,36 +10,34 @@
 
 using namespace std;
 
-const int MAX = 100;
+string b_num;
+int n, sum;
 
-int a[100][100] = { 0, };
-int n, m, cnt, ans;
+
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> cnt;
+	cin >> b_num >> n;
 
-	for(int i = 0; i < cnt; i++)
+	for(int i = 0; i < (int)b_num.length(); i++)
 	{
-		cin >> n >> m;
-
-		for(int i = n; i < n + 10; i++)
+		// 해당 글자
+		int tmp = b_num[(int)b_num.length() - (i + 1)];
+		if ('0' <= tmp && tmp <= '9')
 		{
-			for (int j = m; j < m + 10; j++)
-			{
-				// 0에서 1로 체크하는 순간만 색종이의 넓이로 판단
-				if (!a[i][j])
-				{
-					ans++;
-
-					a[i][j] = 1;
-				}
-			}
+			tmp = tmp - '0';
 		}
+		else
+		{
+			tmp = tmp + 10 - 'A';
+		}
+		// 10진법 변환 방법
+		sum += (tmp * (int)pow(n, i));
 	}
-	cout << ans;
+	cout << sum << '\n';
+
 	return 0;
 }
 
