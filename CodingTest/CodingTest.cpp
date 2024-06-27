@@ -10,36 +10,36 @@
 
 using namespace std;
 
-string b_num;
-int n, b;
-
+int n, m, a[4] = {25, 10, 5, 1}, b[4];
 
 int main()
 {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n >> b;
+	cin >> n;
 
-	while(n != 0)
+	for(int i = 0; i < n; i++)
 	{
-		int tmp = n % b;
-		if(tmp > 9)
-		{
-			// - 10 + 'A' 혹은 + 55
-			tmp = tmp - 10 + 'A';
-			b_num += tmp;
-		}
-		else
-		{
-			// 10 이하의 수
-			b_num += ('0' + tmp);
-		}
-		n /= b;
-	}
-	reverse(b_num.begin(), b_num.end());
+		cin >> m;
+		//m *= 100;
 
-	cout << b_num << '\n';
+		while(m > 0)
+		{
+			fill(&b[0], &b[4], 0);
+			for(int j = 0; j < 4; j++)
+			{
+				if(m / a[j] > 0)
+				{
+					b[j] = m / a[j];
+
+					m -= (b[j] * a[j]);
+				}
+			}
+		}
+		cout << b[0] << " " << b[1] << " " << b[2] << " " << b[3] << endl;
+	}
+	
 
 	return 0;
 }
